@@ -1,0 +1,326 @@
+/* --------------------------------------------------------------------------
+/* Print - a comprehensive print stylesheet for web pages
+/* v1.0 - 20250404 - Gemini 2.5 Pro
+*/
+@media print {
+
+    /* ------------------------------------------------------------------------------
+    /* Variables
+    */
+    :root {
+        /* Define print-specific variables for easy customization */
+        --print-bg-color: #fff;
+        --print-border-color: #aaa;
+        --print-code-bg-color: #f8f8f8;
+        --print-code-font-size: 11pt;
+        --print-font-family: Georgia, "Times New Roman", Times, serif;
+        --print-font-size: 12pt;
+        --print-header-bg-color: #eee;
+        --print-line-height: 1.4;
+        --print-link-color: #555; /* Subtle color for links */
+        --print-page-margin: 1.5cm; /* Adjust as needed */
+        --print-text-color: #000;
+    }
+
+    /* ------------------------------------------------------------------------------
+    /* Basic Reset
+    */
+    *,
+    *::before,
+    *::after {
+        background: transparent !important; /* Save ink */
+        box-shadow: none !important;
+        color: var(--print-text-color) !important; /* Ensure high contrast */
+        filter: none !important;
+        text-shadow: none !important;
+        transition: none !important;
+    }
+
+    body {
+        background-color: var(--print-bg-color);
+        color: var(--print-text-color);
+        font-family: var(--print-font-family);
+        font-size: var(--print-font-size);
+        line-height: var(--print-line-height);
+        margin: 0; /* Reset body margin, page margins handle spacing */
+        print-color-adjust: economy; /* Default to saving ink */
+        width: 100% !important; /* Ensure body takes full printable width */
+    }
+
+    /* ------------------------------------------------------------------------------
+    /* Page Setup (@page rule)
+    */
+    @page {
+        margin: var(--print-page-margin);
+
+    /* Example: Different margins for left/right pages (book style) */
+    /*
+    &:left {
+        margin-left: 2cm;
+        margin-right: 1.5cm;
+    }
+    &:right {
+        margin-left: 1.5cm;
+        margin-right: 2cm;
+    }
+    */
+    }
+
+    /* ------------------------------------------------------------------------------
+    /* Layout Adjustments (Flexbox, Grid, Floats)
+    */
+
+    /* aim for a single-column layout for print */
+    main,
+    article,
+    section {
+        width: 100% !important;
+        max-width: 100% !important;
+        float: none !important; /* Reset floats */
+        position: static !important; /* Reset positioning where appropriate */
+    }
+
+    /* Reset common layout containers if they hinder linear flow */
+    /* Be selective here - only reset if needed */
+    .container, /* Example common class */
+    .row,       /* Example common class */
+    .grid-container /* Example common class */ {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    /* ------------------------------------------------------------------------------
+    /* Hide Unnecessary Elements
+    */
+    header,
+    footer,
+    nav,
+    aside,
+    .sidebar,
+    .navigation,
+    .pagination, /* Usually not helpful on paper */
+    .search-form,
+    .skip-link,
+    .back-to-top,
+    .cookie-consent,
+    .advertisement,
+    .modal,
+    .social-share-buttons {
+        display: none !important;
+        visibility: hidden !important; /* Belt and braces */
+    }
+
+    /* ------------------------------------------------------------------------------
+    /* Hide interactive elements
+    */
+    form,
+    button,
+    input,
+    textarea,
+    select,
+    video,
+    audio,
+    iframe,
+    canvas,
+    object,
+    embed {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+    /* ------------------------------------------------------------------------------
+    /* Hide elements specifically marked as no-print
+    */
+    .no-print,
+    [data-print="false"] {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+    /* ------------------------------------------------------------------------------
+    /* Show Print-Specific Elements
+    */
+    .print-only,
+    [data-print="only"] {
+        display: block !important; /* Or inline, table-row etc. as needed */
+        visibility: visible !important;
+    }
+
+    /* ------------------------------------------------------------------------------
+    /* Force 'details' elements to be open
+    */
+    details,
+    details[open] summary,
+    details:not([open]) > *:not(summary) {
+        display: block !important;
+    }
+
+    /* ------------------------------------------------------------------------------
+    /* Typography & Content Styling
+    */
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: var(--print-font-family);
+        color: var(--print-text-color);
+        page-break-after: avoid; /* Prevent page breaks directly after headings */
+        page-break-inside: avoid; /* Prevent headings splitting across pages */
+    }
+
+    p,
+    blockquote,
+    ul,
+    ol,
+    dl,
+    li {
+        font-size: var(--print-font-size);
+        line-height: var(--print-line-height);
+        orphans: 3; /* Minimum lines at bottom of page */
+        widows: 3; /* Minimum lines at top of page */
+    }
+
+    blockquote {
+        border-left: 2px solid var(--print-border-color);
+        padding-left: 1em;
+        margin-left: 0;
+        page-break-inside: avoid;
+    }
+
+    pre,
+    code,
+    kbd,
+    samp {
+        font-family: Consolas, Courier, monospace;
+        font-size: var(--print-code-font-size);
+        background-color: var(--print-code-bg-color) !important; /* Light background for code blocks */
+        border: 2px solid var(--print-border-color) !important;
+        padding: 0.5em 1em !important;
+        white-space: pre-wrap !important; /* Allow wrapping */
+        word-wrap: break-word !important; /* Break long words */
+        page-break-inside: avoid;
+        print-color-adjust: exact; /* Force background/border print */
+        -webkit-print-color-adjust: exact;
+    }
+
+    /* ------------------------------------------------------------------------------
+    Links
+    */
+
+    a {
+        color: var(--print-link-color) !important; /* Make links less prominent */
+        text-decoration: underline; /* Ensure links are identifiable */
+    }
+
+    /* Show the URL after links (unless it's an internal fragment or JS) */
+    a[href^="http"]::after,
+    a[href^="//"]::after
+    {
+        content: " (" attr(href) ")";
+        font-size: 90%; /* Make URL slightly smaller */
+        color: var(--print-link-color);
+        word-wrap: break-word; /* Prevent long URLs from overflowing */
+        display: inline-block; /* Needed for potential wrapping issues */
+        max-width: 100%; /* Limit width */
+    }
+
+    /* Don't show URLs for internal links or javascript */
+    a[href^="#"]::after,
+    a[href^="javascript:"]::after {
+        content: "";
+    }
+
+    /* Show the title for abbreviations */
+    abbr[title]::after {
+        content: " (" attr(title) ")";
+        font-size: 90%;
+    }
+
+    /* ------------------------------------------------------------------------------
+    Media (Images, Tables)
+    */
+
+    img,
+    svg {
+        max-width: 100% !important; /* Ensure images don't overflow */
+        height: auto !important; /* Maintain aspect ratio */
+        page-break-inside: avoid; /* Try to keep images on one page */
+        vertical-align: middle; /* Align nicely with text */
+    }
+
+    figure {
+        page-break-inside: avoid;
+        margin: 1em 0; /* Add standard spacing */
+    }
+
+    figcaption {
+        font-size: var(--print-font-size) !important; /* Ensure figcaption is readable */
+        color: var(--print-link-color) !important;
+        margin-top: 0.5em;
+    }
+
+    table {
+        width: 100% !important; /* Make tables use full width */
+        border-collapse: collapse !important;
+        margin: 1em 0;
+        font-size: var(--print-font-size); /* Optionally reduce table font size */
+        page-break-inside: auto; /* Allow tables to break if necessary */
+    }
+
+    thead {
+        display: table-header-group; /* Repeat table headers on each page */
+    }
+
+    tbody,
+    tr,
+    td,
+    th {
+        page-break-inside: avoid; /* Try to keep rows together */
+    }
+
+    th,
+    td {
+        border: 1px solid var(--print-border-color) !important;
+        padding: 0.4em 0.6em !important;
+        text-align: left;
+        vertical-align: top;
+        print-color-adjust: exact; /* Force border print */
+        -webkit-print-color-adjust: exact;
+    }
+
+    th {
+        font-weight: bold;
+        background-color: var(--print-header-bg-color) !important; /* Light header background */
+    }
+
+    /* ==========================================================================
+    Page Breaks Control
+     ========================================================================== */
+
+    /* Elements that should ideally start on a new page */
+    /* Use sparingly */
+    .page-break-before {
+        page-break-before: always;
+    }
+
+    /* Elements that should ideally end a page */
+    /* Use sparingly */
+    .page-break-after {
+        page-break-after: always;
+    }
+
+    /* Prevent breaks inside these common containers */
+    ul,
+    ol,
+    dl {
+        page-break-inside: avoid;
+    }
+
+} /* End @media print */
