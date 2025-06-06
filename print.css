@@ -1,11 +1,10 @@
 /* --------------------------------------------------------------------------
-/* Print - a comprehensive print stylesheet for web pages
+/* Print - a comprehensive print stylesheet
 /* https://github.com/dcog989/print.css
-/* v1.0 - 20250404 - Gemini 2.5 Pro
+/* v1.1
 */
 @media print {
-
-    /* ------------------------------------------------------------------------------
+    /* ----------------------------------------------------------------------------
     /* Variables
     */
     :root {
@@ -23,7 +22,7 @@
         --print-text-color: #000;
     }
 
-    /* ------------------------------------------------------------------------------
+    /* ----------------------------------------------------------------------------
     /* Basic Reset
     */
     *,
@@ -48,14 +47,14 @@
         width: 100% !important; /* Ensure body takes full printable width */
     }
 
-    /* ------------------------------------------------------------------------------
+    /* ----------------------------------------------------------------------------
     /* Page Setup (@page rule)
     */
     @page {
         margin: var(--print-page-margin);
 
-    /* Example: Different margins for left/right pages (book style) */
-    /*
+        /* Example: Different margins for left/right pages (book style) */
+        /*
     &:left {
         margin-left: 2cm;
         margin-right: 1.5cm;
@@ -67,7 +66,7 @@
     */
     }
 
-    /* ------------------------------------------------------------------------------
+    /* ----------------------------------------------------------------------------
     /* Layout Adjustments (Flexbox, Grid, Floats)
     */
 
@@ -82,7 +81,6 @@
     }
 
     /* Reset common layout containers if they hinder linear flow */
-    /* Be selective here - only reset if needed */
     .container, /* Example common class */
     .row,       /* Example common class */
     .grid-container /* Example common class */ {
@@ -95,7 +93,7 @@
         padding-right: 0 !important;
     }
 
-    /* ------------------------------------------------------------------------------
+    /* ----------------------------------------------------------------------------
     /* Hide Unnecessary Elements
     */
     header,
@@ -116,7 +114,7 @@
         visibility: hidden !important; /* Belt and braces */
     }
 
-    /* ------------------------------------------------------------------------------
+    /* ----------------------------------------------------------------------------
     /* Hide interactive elements
     */
     form,
@@ -134,7 +132,7 @@
         visibility: hidden !important;
     }
 
-    /* ------------------------------------------------------------------------------
+    /* ----------------------------------------------------------------------------
     /* Hide elements specifically marked as no-print
     */
     .no-print,
@@ -143,16 +141,16 @@
         visibility: hidden !important;
     }
 
-    /* ------------------------------------------------------------------------------
+    /* ----------------------------------------------------------------------------
     /* Show Print-Specific Elements
     */
     .print-only,
     [data-print="only"] {
-        display: block !important; /* Or inline, table-row etc. as needed */
+        display: block !important;
         visibility: visible !important;
     }
 
-    /* ------------------------------------------------------------------------------
+    /* ----------------------------------------------------------------------------
     /* Force 'details' elements to be open
     */
     details,
@@ -161,7 +159,18 @@
         display: block !important;
     }
 
-    /* ------------------------------------------------------------------------------
+    summary::-webkit-details-marker,
+    summary::marker {
+        display: none !important;
+    }
+
+    summary {
+        display: block !important;
+        font-weight: bold;
+        margin-bottom: 0.5em;
+    }
+
+    /* ----------------------------------------------------------------------------
     /* Typography & Content Styling
     */
     h1,
@@ -188,6 +197,16 @@
         widows: 3; /* Minimum lines at top of page */
     }
 
+    li {
+        display: list-item !important;
+    }
+
+    ul,
+    ol {
+        margin-left: 0;
+        padding-left: 2em;
+    }
+
     blockquote {
         border-left: 2px solid var(--print-border-color);
         padding-left: 1em;
@@ -211,8 +230,16 @@
         -webkit-print-color-adjust: exact;
     }
 
-    /* ------------------------------------------------------------------------------
-    Links
+    hr {
+        height: 1px;
+        border: 0;
+        border-top: 1px solid var(--print-border-color);
+        margin: 2em 0;
+        display: block !important;
+    }
+
+    /* ----------------------------------------------------------------------------
+    /* Links
     */
 
     a {
@@ -244,8 +271,8 @@
         font-size: 90%;
     }
 
-    /* ------------------------------------------------------------------------------
-    Media (Images, Tables)
+    /* ----------------------------------------------------------------------------
+    /* Media (Images, Tables)
     */
 
     img,
@@ -254,6 +281,8 @@
         height: auto !important; /* Maintain aspect ratio */
         page-break-inside: avoid; /* Try to keep images on one page */
         vertical-align: middle; /* Align nicely with text */
+        image-rendering: -webkit-optimize-contrast; /* For crisp edges, where supported */
+        image-rendering: crisp-edges;
     }
 
     figure {
@@ -301,18 +330,16 @@
         background-color: var(--print-header-bg-color) !important; /* Light header background */
     }
 
-    /* ==========================================================================
-    Page Breaks Control
-     ========================================================================== */
+    /* ----------------------------------------------------------------------------
+    /* Page Breaks Control
+    */
 
     /* Elements that should ideally start on a new page */
-    /* Use sparingly */
     .page-break-before {
         page-break-before: always;
     }
 
     /* Elements that should ideally end a page */
-    /* Use sparingly */
     .page-break-after {
         page-break-after: always;
     }
@@ -323,5 +350,4 @@
     dl {
         page-break-inside: avoid;
     }
-
 } /* End @media print */
